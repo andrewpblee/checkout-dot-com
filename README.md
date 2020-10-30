@@ -42,7 +42,7 @@ Pageviews contains the following tables:
 
 `raw_pageviews`
 
-- This table is basically replicating the `pageviews_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate with the date added. (I've kept the table in for a sake of completeness)
+- This table is basically replicating the `pageviews_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate. (I've kept the table in for a sake of completeness)
 - This table incrementally refreshes hourly and pulls in the user id, url and datetime of the pageviews from the previous hour.
 
 `pageviews_agg`
