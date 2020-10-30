@@ -15,6 +15,7 @@ The dag is composed of two operators, a run operator triggering `dbt run`, and a
 
 Once connected to the snowflake datawarehouse with the correct credential and hosted on the correct, this pipeline shoud update automatically. If we need to run the pipeline out of these hours, we can manually trigger the dag in airflow(removing the tag if a full refresh of every table is needed), or run the models using `dbt run` on the command line.
 
+
 ## My Approach
 
 My overall approach was to create 3 schemas:
@@ -22,6 +23,9 @@ My overall approach was to create 3 schemas:
 - Users (containing tables related to user data)
 - Pageviews (containing tables related to pageview data)
 - Analytics (containing the combined table designed to be queried)
+
+Each column has at least one test to ensure accuracy, and each schema has its own yml file to include documentation.
+
 
 ### Users
 
