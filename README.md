@@ -67,8 +67,6 @@ Pageviews contains the following tables:
   - Finally I join the users and pageview tables together, and aggregate the pageviews to hour, date, postcode and most recent postcode level.
   - This approach allows the full table to be connected to looker, and the two questions can be answered by grouping to the relevant postcode and aggregating the pageviews.
 
-### Other Options Considered:
-
 - For this table there were a couple other options I considered:
 
 | Option                                                                                               | Picked | Pros                                                                                                  | Cons                                                                                   | Notes                                                             |
