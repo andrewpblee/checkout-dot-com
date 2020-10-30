@@ -16,5 +16,5 @@ postcode,
 execution_date
 from {{ ref('users.raw_users') }}
 {% if is_incremental() %}
-    where refreshed_on = '{{ var("execution_date")}}'
+    where execution_date = '{{ var("execution_date")}}'
 {% endif %}
