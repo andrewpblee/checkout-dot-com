@@ -3,7 +3,8 @@
         materialized='table',
         schema='users',
         name='raw_users',
-        unique_key= concat(id::varchar, postcode)
+        unique_key= concat(id::varchar, postcode),
+        tags=['daily']
     )
 }}
 

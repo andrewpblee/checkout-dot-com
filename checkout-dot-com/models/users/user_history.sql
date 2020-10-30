@@ -16,9 +16,5 @@ postcode,
 execution_date
 from {{ ref('users.raw_users') }}
 {% if is_incremental() %}
-where refreshed_on > 
-    (select 
-    max(execution_date)
-    from {{ this }}
-    )
+    where refreshed_on = '{{ var("execution_date")}}'
 {% endif %}

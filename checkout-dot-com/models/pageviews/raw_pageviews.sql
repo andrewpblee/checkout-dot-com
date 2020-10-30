@@ -7,7 +7,8 @@
             user_id::varchar, 
             url, 
             date_part(epoch_second,pageview_datetime)::varchar
-            )
+            ),
+        tags=['hourly', 'daily']
         )
 }}
 
@@ -17,9 +18,5 @@ url,
 pageview_datetime
 from {{ source('staging', 'pageviews_extract​') }}
 {% if is_incremental() %}
-    where pageview_datetime > 
-        (select 
-        max(pageview_datetime) 
-        from {{this}}
-        )
+    where pageview_datetime >= {{ var('execution_hour')}}
 {% endif %}

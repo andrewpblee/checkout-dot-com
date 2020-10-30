@@ -6,7 +6,8 @@
         unique_key= concat(
             user_id::varchar, 
             date_part(epoch_second,pageview_hour)::varchar
-            )
+            ),
+        tags=['hourly', 'daily']
         )
     )
 }}
@@ -18,10 +19,6 @@ date_trunc('HOUR', pageview_datetime) as pageview_hour,
 count(0) as pageviews
 from {{ ref('pageviews.raw_pageviews​') }}
 {% if is_incremental() %}
-    where pageview_datetime >= 
-        (select 
-        max(pageview_hour) 
-        from {{this}}
-        )
+   where pageview_datetime >= {{ var('execution_hour')}}
 {% endif %}
 group by 1,2

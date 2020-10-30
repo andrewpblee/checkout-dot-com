@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: hourly_pageviews
+    description: Aggregrating pageview counts at an hourly level, by postcode and current postcode of user
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_part(epoch_second,pageview_hour)::varchar
+            - postcode
+            - current_postcode
+
+    columns:
+      - name: pageview_date
+        description: The date of the pageview
+        tests:
+          - not_null
+
+      - name: pageview_hour
+        description: The datetime of the pageview, truncated by the hour
+        tests:
+          - not_null
+
+      - name: postcode
+        description: The postcode attributed to the user on the day of the pageview
+        tests:
+          - not_null
+
+      - name: current_postcode
+        description: The most recent know postcode of the user
+        tests:
+          - not_null
+
+      - name: pageviews
+        description: The count of pageviews
+        tests:
+          - not_null

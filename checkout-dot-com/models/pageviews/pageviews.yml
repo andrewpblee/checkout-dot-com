@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: pageviews_agg
+    description: Aggregrating pageview counts at an hourly level, by user.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - date_part(epoch_second,pageview_hour)
+
+    columns:
+      - name: user_id
+        description: The id of the user, e.g 1234
+        tests:
+          - not_null
+
+      - name: pageview_date
+        description: The date of the pageview
+        tests:
+          - not_null
+
+      - name: pageview_hour
+        description: The datetime of the pageview, truncated by the hour
+        tests:
+          - not_null
+
+      - name: pageviews
+        description: The count of pageviews
+        tests:
+          - not_null
