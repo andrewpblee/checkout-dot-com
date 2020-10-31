@@ -40,19 +40,35 @@ Users contains the following tables:
 
 - This table runs incrementally downstream of the `raw_users` and adds any new data for each user from the previous day, assigning the date of the postcode to `execution_date`, the date the incremental runs are focussing on, which should be yesterday.
 
+* An alternative to this approach would be to use a snapshot table, which would in effect build the history of the user for us, and provide `updated_at` details from which we could ascertain the most recent postcode. To use this approach we would need to create a snapshot table, similar to this:
+
+```
+{% snapshot users_snapshot %}
+
+{{
+    config(
+      target_schema='snapshots',
+      unique_key='id',
+      strategy='timestamp',
+      updated_at='updated_at',
+    )
+}}
+
+select * from {{ source('staging', 'users_extract') }}
+
+{% endsnapshot %}
+```
+
+- We would then need to add a snapshot operator within our dag, upstream of dbt run.
+- This approach could turn out to be more efficient and viable than my current solution, so is definitely worth considering movign forward. (I've left my current solution due to time restraints)
+
 ### Pageviews
 
-Pageviews contains the following tables:
-
-`raw_pageviews`
-
-
-- This table is basically replicating the `pageviews_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate. (I've kept the table in for a sake of completeness)
-- This table incrementally refreshes hourly and pulls in the user id, url and datetime of the pageviews from the previous hour.
+Pageviews contains the following table:
 
 `pageviews_agg`
 
-- This table runs incrementally downstream of `raw_pageviews` and aggregates the pageviews of the user truncated to the hour (I go through this decision in more detail further down).
+- This table runs incrementally downstream of `pageviews_extract` and aggregates the pageviews of the user truncated to the hour (I go through this decision in more detail further down).
 - I used `count(0)` to count pageviews, as I have created a unique key for this table, and have distincted the data upstream, in order to remove duplication.
 
 ### Analytics
