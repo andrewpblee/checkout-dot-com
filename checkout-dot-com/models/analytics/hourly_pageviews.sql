@@ -3,9 +3,7 @@
         materialized='incremental',
         schema='analytics',
         name='hourly_pageviews',
-        unique_key= date_part(epoch_second,pageview_hour)::varchar || postcode
-                current_postcode
-                ),
+        unique_key= date_part(epoch_second,pageview_hour)::varchar || postcode || current_postcode
         tags=['hourly', 'daily']
     )
     
