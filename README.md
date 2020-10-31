@@ -99,7 +99,7 @@ Pageviews contains the following table:
 
 For this task I've made a few assumptions and detailed my approach accordingly.
 
-### Assumption 1: Within the users_extracts table, only one postcode will be present per user.
+### Assumption 1: Within the `users_extracts` table, only one postcode will be present per user.
 
 One of the main difficulties with this table is that there is no date or time associated with the postcode value of each user. My approach relies on there only being one postcode per user, from which we can attribute a date based off the execution date and incrementally build a history for each user.
 
