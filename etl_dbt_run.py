@@ -7,7 +7,7 @@ from datetime import datetime,timedelta
 
 execution_date = '{{ yesterday_ds }}'
 now = datetime.datetime.now()
-execution_hour = datetime.now().replace(microsecond=0, second=0, minute=0) - timedelta(hours=1)
+execution_hour = datetime.datetime.now().replace(microsecond=0, second=0, minute=0) - timedelta(hours=1)
 
 dbt_tags = 'tag:daily' if now.hour == 1 else 'tag:hourly'
 
