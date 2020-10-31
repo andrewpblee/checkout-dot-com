@@ -11,7 +11,8 @@ This pipeline sits within a dbt project, that is scheduled via airflow.
 
 The airflow dag is designed to run hourly, however as not every table needs to be updated this frequently (user tables are only updated daily), each table is tagged with either `hourly` or `daily`, and if the hour of the day is 1 (1am), the daily tagged tables will be refreshed, otherwise the hourly tagged tables will refresh.
 
-The dag is composed of two operators, a run operator triggering `dbt run`, then a test operator triggering `dbt test` downstream.
+
+The dag is composed of two operators, a run operator triggering `dbt run`, and a test operator triggering `dbt test` downstream.
 
 Once connected to the snowflake datawarehouse with the correct credential and hosted on the correct, this pipeline shoud update automatically. If we need to run the pipeline out of these hours, we can manually trigger the dag in airflow(removing the tag if a full refresh of every table is needed), or run the models using `dbt run` on the command line.
 
@@ -22,6 +23,9 @@ My overall approach was to create 3 schemas:
 - Users (containing tables related to user data)
 - Pageviews (containing tables related to pageview data)
 - Analytics (containing the combined table designed to be queried)
+
+
+Each column has at least one test to ensure accuracy, and each schema has its own yml file to include documentation.
 
 ### Users
 
@@ -42,7 +46,8 @@ Pageviews contains the following tables:
 
 `raw_pageviews`
 
-- This table is basically replicating the `pageviews_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate with the date added. (I've kept the table in for a sake of completeness)
+
+- This table is basically replicating the `pageviews_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate. (I've kept the table in for a sake of completeness)
 - This table incrementally refreshes hourly and pulls in the user id, url and datetime of the pageviews from the previous hour.
 
 `pageviews_agg`
@@ -66,8 +71,6 @@ Pageviews contains the following tables:
 
   - Finally I join the users and pageview tables together, and aggregate the pageviews to hour, date, postcode and most recent postcode level.
   - This approach allows the full table to be connected to looker, and the two questions can be answered by grouping to the relevant postcode and aggregating the pageviews.
-
-### Other Options Considered:
 
 - For this table there were a couple other options I considered:
 
