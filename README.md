@@ -14,7 +14,7 @@ The airflow dag is designed to run hourly, however as not every table needs to b
 
 The dag is composed of two operators, a run operator triggering `dbt run`, and a test operator triggering `dbt test` downstream.
 
-Once connected to the snowflake datawarehouse with the correct credential and hosted on the correct, this pipeline shoud update automatically. If we need to run the pipeline out of these hours, we can manually trigger the dag in airflow(removing the tag if a full refresh of every table is needed), or run the models using `dbt run` on the command line.
+Once connected to the snowflake datawarehouse with the correct credentials and hosted on the correct server, this pipeline shoud update automatically. If we need to run the pipeline manually, we can manually trigger the dag in airflow(removing the tag if a full refresh of every table is needed), or run the models using `dbt run` on the command line.
 
 ## My Approach
 
