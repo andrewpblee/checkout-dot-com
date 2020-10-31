@@ -3,10 +3,7 @@
         materialized='incremental',
         schema='analytics',
         name='hourly_pageviews',
-        unique_key= 
-            concat(
-                date_part(epoch_second,pageview_hour)::varchar,
-                postcode,
+        unique_key= date_part(epoch_second,pageview_hour)::varchar || postcode
                 current_postcode
                 ),
         tags=['hourly', 'daily']
@@ -37,10 +34,10 @@ with pageviews as
 , users as 
 -- Creating the current postcode of each relevant user from their history
     (select 
-    execution_date, 
+    distinct execution_date, 
     id, 
     postcode, 
-    last_value(postcode) over (partition by id, order by date asc) as current_postcode
+    last_value(postcode) over (partition by id, order by execution_date asc) as current_postcode
     from {{ ref('users.user_history') }}) h 
         inner join users_in_focus f
         on u.id = f.user_id)
