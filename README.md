@@ -33,7 +33,7 @@ Users contains the following tables:
 
 `raw_users`
 
-- This table is basically replicating the `user_extract` table as defined in the task. In reality this table most likely would not be needed, as it is just a duplicate with the date added. (I've kept the table in for a sake of completeness)
+- This table is basically replicating the `user_extract` table as defined in the task, but is adding in the execution in order to build an incremental model downstream.
 - This table fully refreshes daily and pulls in the id of the user and the postcode
 
 `user_history`
