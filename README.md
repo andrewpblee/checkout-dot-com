@@ -60,7 +60,7 @@ select * from {{ source('staging', 'users_extract') }}
 ```
 
 - We would then need to add a snapshot operator within our dag, upstream of dbt run.
-- This approach could turn out to be more efficient and viable than my current solution, so is definitely worth considering movign forward. (I've left my current solution due to time restraints)
+- This approach could turn out to be more efficient and viable than my current solution, so is definitely worth considering moving forward. (I've left my current solution due to time restraints)
 
 ### Pageviews
 
@@ -92,7 +92,7 @@ Pageviews contains the following table:
 
 | Option                                                                                               | Picked | Pros                                                                                                  | Cons                                                                                   | Notes                                                             |
 | ---------------------------------------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Aggregate any postcode and most recent post in separate tables or final table, then join on postcode |        | Avoids creating a matrix of postcodes                                                                 | Requires more joins and tables to create, and pageviews are less obvious to understand | This is a ery viable option and would not take long to implement. |
+| Aggregate any postcode and most recent post in separate tables or final table, then join on postcode |        | Avoids creating a matrix of postcodes                                                                 | Requires more joins and tables to create, and pageviews are less obvious to understand | This is a very viable option and would not take long to implement. |
 | Keep any postcode and current postcode separate and grouped by both                                  | Yes    | Less joins and processing is required, and pageviews are in one column which can be aggregated later. | More rows are needed to store the data and postcode are less obivous.                  | I've gone with this option in favour of performance.              |
 
 ## Assumptions:
