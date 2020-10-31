@@ -3,10 +3,7 @@
         materialized='incremental',
         schema='users',
         name='user_history',
-        unique_key= concat(
-            id::varchar, 
-            to_varchar(execution_date)
-            )
+        unique_key= id::varchar || to_varchar(execution_date)
     )
 }}
 
